@@ -39,11 +39,20 @@ int fingersOnScreen = 0;
         
         CircleView *circleView = [[CircleView alloc] initWithRadius:50 withColor:[UIColor blueColor] atLocation:touchLocation];
         [self.view addSubview:circleView];
+        if (fingersOnScreen == 1) {
+            self.singleCircle = circleView;
+        }
     }];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event //finger moved
 {
+    if (fingersOnScreen == 1 && self.singleCircle != nil) {
+        [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            UITouch *touch = obj;
+            self.singleCircle.center = [touch locationInView:self.view];
+        }];
+    }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event //finger up
